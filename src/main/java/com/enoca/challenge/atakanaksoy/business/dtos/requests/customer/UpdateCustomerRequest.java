@@ -17,4 +17,7 @@ public class UpdateCustomerRequest {
 
     @Size(min = 2, max = 30)
     private String email;
+
+    @Size(min = 11, max = 11)
+    private String phoneNumber;
 }

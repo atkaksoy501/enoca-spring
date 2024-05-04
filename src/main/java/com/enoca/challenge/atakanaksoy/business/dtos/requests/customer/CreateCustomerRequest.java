@@ -21,4 +21,8 @@ public class CreateCustomerRequest {
     @NotNull
     @Size(min = 2, max = 30)
     private String email;
+
+    @NotNull
+    @Size(min = 11, max = 11)
+    private String phoneNumber;
 }
