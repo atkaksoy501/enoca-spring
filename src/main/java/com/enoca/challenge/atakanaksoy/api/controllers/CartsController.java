@@ -26,10 +26,10 @@ public class CartsController {
         return cartService.add(createCartRequest);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedCartResponse update(@Valid @RequestBody UpdateCartRequest updateCartRequest) {
-        return cartService.update(updateCartRequest);
+    public UpdatedCartResponse update(@Valid @RequestBody UpdateCartRequest updateCartRequest, @PathVariable int id) {
+        return cartService.update(updateCartRequest, id);
     }
 
     @DeleteMapping("/delete/{id}")

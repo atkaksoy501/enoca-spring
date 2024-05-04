@@ -26,10 +26,10 @@ public class CustomersController {
         return customerService.add(createCustomerRequest);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedCustomerResponse update(@Valid @RequestBody UpdateCustomerRequest updateCustomerRequest) {
-        return customerService.update(updateCustomerRequest);
+    public UpdatedCustomerResponse update(@Valid @RequestBody UpdateCustomerRequest updateCustomerRequest, @PathVariable int id) {
+        return customerService.update(updateCustomerRequest, id);
     }
 
     @DeleteMapping("/delete/{id}")

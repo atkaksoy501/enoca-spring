@@ -21,7 +21,7 @@ public class CartManager implements CartService {
     }
 
     @Override
-    public UpdatedCartResponse update(UpdateCartRequest updateCartRequest) {
+    public UpdatedCartResponse update(UpdateCartRequest updateCartRequest, int id) {
         return null;
     }
 

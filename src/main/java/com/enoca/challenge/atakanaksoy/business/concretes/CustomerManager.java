@@ -21,7 +21,7 @@ public class CustomerManager implements CustomerService {
     }
 
     @Override
-    public UpdatedCustomerResponse update(UpdateCustomerRequest updateCustomerRequest) {
+    public UpdatedCustomerResponse update(UpdateCustomerRequest updateCustomerRequest, int id) {
         return null;
     }
 
