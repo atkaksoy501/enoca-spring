@@ -1,6 +1,8 @@
 package com.enoca.challenge.atakanaksoy.business.abstracts;
 
+import com.enoca.challenge.atakanaksoy.business.dtos.requests.cart.AddProductToCartRequest;
 import com.enoca.challenge.atakanaksoy.business.dtos.requests.cart.CreateCartRequest;
+import com.enoca.challenge.atakanaksoy.business.dtos.requests.cart.RemoveProductFromCartRequest;
 import com.enoca.challenge.atakanaksoy.business.dtos.requests.cart.UpdateCartRequest;
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.cart.CreatedCartResponse;
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.cart.GetAllCartsResponse;
@@ -15,7 +17,7 @@ public interface CartService {
     void delete(int id);
     GetCartByIdResponse getById(int id);
     List<GetAllCartsResponse> getAll();
-    UpdatedCartResponse addProduct(int cartId, int productId);
-    UpdatedCartResponse removeProduct(int cartId, int productId);
+    UpdatedCartResponse addProduct(AddProductToCartRequest addProductToCartRequest);
+    UpdatedCartResponse removeProduct(RemoveProductFromCartRequest removeProductFromCartRequest);
     GetCartByIdResponse getByCustomerId(int customerId);
 }

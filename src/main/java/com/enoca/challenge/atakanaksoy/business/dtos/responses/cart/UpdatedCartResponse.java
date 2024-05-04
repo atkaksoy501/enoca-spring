@@ -1,5 +1,6 @@
 package com.enoca.challenge.atakanaksoy.business.dtos.responses.cart;
 
+import com.enoca.challenge.atakanaksoy.entities.concretes.CartProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,6 @@ public class UpdatedCartResponse {
     private int id;
     private int customerId;
     private double totalPrice;
-    private List<Integer> productIds;
+    private List<CartProduct> products;
     private LocalDateTime updateDate;
 }

@@ -19,4 +19,11 @@ public class ProductBusinessRules {
         }
         else return product;
     }
+
+    public void productStockMustBeEnough(int productId, int quantity) {
+        Product product = productMustExists(productId);
+        if (product.getStock() < quantity) {
+            throw new BusinessException(ProductMessages.PRODUCT_STOCK_NOT_ENOUGH);
+        }
+    }
 }

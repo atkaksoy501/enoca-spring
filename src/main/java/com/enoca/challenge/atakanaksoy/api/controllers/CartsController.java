@@ -1,7 +1,9 @@
 package com.enoca.challenge.atakanaksoy.api.controllers;
 
 import com.enoca.challenge.atakanaksoy.business.abstracts.CartService;
+import com.enoca.challenge.atakanaksoy.business.dtos.requests.cart.AddProductToCartRequest;
 import com.enoca.challenge.atakanaksoy.business.dtos.requests.cart.CreateCartRequest;
+import com.enoca.challenge.atakanaksoy.business.dtos.requests.cart.RemoveProductFromCartRequest;
 import com.enoca.challenge.atakanaksoy.business.dtos.requests.cart.UpdateCartRequest;
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.cart.CreatedCartResponse;
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.cart.GetAllCartsResponse;
@@ -48,5 +50,17 @@ public class CartsController {
     @ResponseStatus(HttpStatus.OK)
     public List<GetAllCartsResponse> getAll() {
         return cartService.getAll();
+    }
+
+    @PutMapping("/add/product")
+    @ResponseStatus(HttpStatus.OK)
+    public UpdatedCartResponse addProduct(@Valid @RequestBody AddProductToCartRequest addProductToCartRequest) {
+        return cartService.addProduct(addProductToCartRequest);
+    }
+
+    @PutMapping("/remove/product")
+    @ResponseStatus(HttpStatus.OK)
+    public UpdatedCartResponse removeProduct(@Valid @RequestBody RemoveProductFromCartRequest removeProductFromCartRequest) {
+        return cartService.removeProduct(removeProductFromCartRequest);
     }
 }
