@@ -15,11 +15,13 @@ public class BaseEntity {
 
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "base_sequence_generator" //generator name
+            strategy = GenerationType.IDENTITY
     )
     @Column(name = "id")
     private int id;
+
+    @Column(name = "active")
+    private boolean active;
 
     @Column(name = "createDate")
     private LocalDateTime createDate;
