@@ -10,6 +10,8 @@ import com.enoca.challenge.atakanaksoy.business.dtos.responses.cart.UpdatedCartR
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class CartManager implements CartService {
@@ -34,7 +36,7 @@ public class CartManager implements CartService {
     }
 
     @Override
-    public GetAllCartsResponse getAll() {
+    public List<GetAllCartsResponse> getAll() {
         return null;
     }
 }

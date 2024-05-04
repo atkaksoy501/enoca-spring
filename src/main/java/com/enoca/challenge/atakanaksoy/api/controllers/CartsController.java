@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/carts")
@@ -44,7 +46,7 @@ public class CartsController {
 
     @GetMapping("/get/all")
     @ResponseStatus(HttpStatus.OK)
-    public GetAllCartsResponse getAll() {
+    public List<GetAllCartsResponse> getAll() {
         return cartService.getAll();
     }
 }
