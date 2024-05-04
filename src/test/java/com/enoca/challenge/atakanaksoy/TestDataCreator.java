@@ -1,6 +1,8 @@
 package com.enoca.challenge.atakanaksoy;
 
 import com.enoca.challenge.atakanaksoy.business.abstracts.CustomerService;
+import com.enoca.challenge.atakanaksoy.business.dtos.requests.cart.AddProductToCartRequest;
+import com.enoca.challenge.atakanaksoy.business.dtos.requests.cart.CreateCartRequest;
 import com.enoca.challenge.atakanaksoy.business.dtos.requests.customer.CreateCustomerRequest;
 import com.enoca.challenge.atakanaksoy.business.dtos.requests.product.CreateProductRequest;
 import com.enoca.challenge.atakanaksoy.entities.concretes.Product;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -67,6 +70,42 @@ public class TestDataCreator {
                 .content(productJson));
 
         result.andExpect(status().isCreated());
+    }
+
+    @Test
+    @Order(3)
+    void createCart() throws Exception {
+        CreateCartRequest createCartRequest = new CreateCartRequest();
+        createCartRequest.setCustomerId(1);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String cartJson = objectMapper.writeValueAsString(createCartRequest);
+
+        ResultActions result = mockMvc.perform(post(BASE_URL + "/carts/add")
+                .contentType("application/json")
+                .content(cartJson));
+
+        result.andExpect(status().isCreated());
+    }
+
+    @Test
+    @Order(4)
+    void addProductToCart() throws Exception {
+        AddProductToCartRequest addProductToCartRequest = new AddProductToCartRequest();
+        addProductToCartRequest.setCartId(1);
+        addProductToCartRequest.setProductId(1);
+        addProductToCartRequest.setQuantity(1);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String addProductToCartJson = objectMapper.writeValueAsString(addProductToCartRequest);
+
+        ResultActions result = mockMvc.perform(put(BASE_URL + "/carts/add/product")
+                .contentType("application/json")
+                .content(addProductToCartJson));
+
+        result.andExpect(status().isOk());
     }
 
 }
