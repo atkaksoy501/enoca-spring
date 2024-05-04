@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor
@@ -23,4 +24,7 @@ public class Order extends BaseEntity {
 
     @Column(name = "total_price")
     private double totalPrice;
+
+    @Column(name = "date")
+    private LocalDateTime date;
 }

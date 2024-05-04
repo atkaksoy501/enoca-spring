@@ -15,5 +15,6 @@ public class CreatedOrderResponse {
     private int customerId;
     private double totalPrice;
     private List<Integer> productIds;
+    private LocalDateTime date;
     private LocalDateTime createDate;
 }
