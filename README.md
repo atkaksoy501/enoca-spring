@@ -1,4 +1,4 @@
-# enoca-spring
+# Enoca Java Challenge Soru 5
 
 Product, Customer, Cart ve Order tablolarının ve bu tablolarının miras aldığı bir Base
 Entity'nin bulunduğu
