@@ -15,4 +15,7 @@ public interface CartService {
     void delete(int id);
     GetCartByIdResponse getById(int id);
     List<GetAllCartsResponse> getAll();
+    UpdatedCartResponse addProduct(int cartId, int productId);
+    UpdatedCartResponse removeProduct(int cartId, int productId);
+    GetCartByIdResponse getByCustomerId(int customerId);
 }

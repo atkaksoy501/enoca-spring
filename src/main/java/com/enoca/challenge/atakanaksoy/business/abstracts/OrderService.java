@@ -15,4 +15,6 @@ public interface OrderService {
     void delete(int id);
     GetOrderByIdResponse getById(int id);
     List<GetAllOrdersResponse> getAll();
+
+    List<GetAllOrdersResponse> getAllByCustomerId(int customerId);
 }

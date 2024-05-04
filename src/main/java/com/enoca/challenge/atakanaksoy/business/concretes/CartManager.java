@@ -42,7 +42,7 @@ public class CartManager implements CartService {
     }
 
     @Override
-    public void delete(int id) { //todo: emptyCart
+    public void delete(int id) { //todo: implement emptyCart
         Cart cart = cartBusinessRules.cartMustExists(id);
         cart.setActive(false);
         cart.setDeleteDate(LocalDateTime.now());
@@ -61,5 +61,23 @@ public class CartManager implements CartService {
         return carts.stream().map(
                 cart -> modelMapperService.forResponse().map(cart, GetAllCartsResponse.class)
         ).toList();
+    }
+
+    @Override
+    public UpdatedCartResponse addProduct(int cartId, int productId) {
+        Cart cart = cartBusinessRules.cartMustExists(cartId);
+        return null; //todo: implement
+    }
+
+    @Override
+    public UpdatedCartResponse removeProduct(int cartId, int productId) {
+        Cart cart = cartBusinessRules.cartMustExists(cartId);
+        return null; //todo: implement
+    }
+
+    @Override
+    public GetCartByIdResponse getByCustomerId(int customerId) {
+        Cart cart = cartBusinessRules.cartMustExistsByCustomerId(customerId);
+        return modelMapperService.forResponse().map(cart, GetCartByIdResponse.class);
     }
 }

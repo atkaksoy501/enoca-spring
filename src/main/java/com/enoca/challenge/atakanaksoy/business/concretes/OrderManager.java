@@ -50,7 +50,7 @@ public class OrderManager implements OrderService {
     }
 
     @Override
-    public GetOrderByIdResponse getById(int id) {
+    public GetOrderByIdResponse getById(int id) { //getOrderForCode
         Order order = orderBusinessRules.orderMustExists(id);
         return modelMapperService.forResponse().map(order, GetOrderByIdResponse.class);
     }
@@ -58,6 +58,14 @@ public class OrderManager implements OrderService {
     @Override
     public List<GetAllOrdersResponse> getAll() {
         List<Order> orders = orderRepository.findAllByActiveTrue();
+        return orders.stream().map(
+                order -> modelMapperService.forResponse().map(order, GetAllOrdersResponse.class)
+        ).toList();
+    }
+
+    @Override
+    public List<GetAllOrdersResponse> getAllByCustomerId(int customerId) { //getAllOrdersForCustomer
+        List<Order> orders = orderRepository.findAllByActiveTrueAndCustomerId(customerId);
         return orders.stream().map(
                 order -> modelMapperService.forResponse().map(order, GetAllOrdersResponse.class)
         ).toList();

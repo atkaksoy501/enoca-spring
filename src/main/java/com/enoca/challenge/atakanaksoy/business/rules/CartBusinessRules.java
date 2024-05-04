@@ -19,4 +19,12 @@ public class CartBusinessRules {
         }
         else return cart;
     }
+
+    public Cart cartMustExistsByCustomerId(int customerId) {
+        Cart cart = cartRepository.findByCustomerId(customerId).orElse(null);
+        if (cart == null || !cart.isActive()) {
+            throw new BusinessException(CartMessages.CART_NOT_EXISTS);
+        }
+        else return cart;
+    }
 }
