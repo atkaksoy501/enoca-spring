@@ -7,6 +7,7 @@ import com.enoca.challenge.atakanaksoy.business.dtos.responses.customer.CreatedC
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.customer.GetAllCustomersResponse;
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.customer.GetCustomerByIdResponse;
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.customer.UpdatedCustomerResponse;
+import com.enoca.challenge.atakanaksoy.business.rules.CustomerBusinessRules;
 import com.enoca.challenge.atakanaksoy.core.utilities.mapping.ModelMapperService;
 import com.enoca.challenge.atakanaksoy.dataAccess.abstracts.CustomerRepository;
 import com.enoca.challenge.atakanaksoy.entities.concretes.Customer;
@@ -21,6 +22,7 @@ import java.util.List;
 public class CustomerManager implements CustomerService {
     private final CustomerRepository customerRepository;
     private final ModelMapperService modelMapperService;
+    private final CustomerBusinessRules customerBusinessRules;
     @Override
     public CreatedCustomerResponse add(CreateCustomerRequest createCustomerRequest) {
         Customer customer = modelMapperService.forRequest().map(createCustomerRequest, Customer.class);
@@ -32,21 +34,32 @@ public class CustomerManager implements CustomerService {
 
     @Override
     public UpdatedCustomerResponse update(UpdateCustomerRequest updateCustomerRequest, int id) {
-        return null;
+        Customer customer = customerBusinessRules.customerMustExists(id);
+        modelMapperService.forUpdate().map(updateCustomerRequest, customer);
+        customer.setUpdateDate(LocalDateTime.now());
+        Customer savedCustomer = customerRepository.save(customer);
+        return modelMapperService.forResponse().map(savedCustomer, UpdatedCustomerResponse.class);
     }
 
     @Override
     public void delete(int id) {
-
+        Customer customer = customerBusinessRules.customerMustExists(id);
+        customer.setActive(false);
+        customer.setDeleteDate(LocalDateTime.now());
+        customerRepository.save(customer);
     }
 
     @Override
     public GetCustomerByIdResponse getById(int id) {
-        return null;
+        Customer customer = customerBusinessRules.customerMustExists(id);
+        return modelMapperService.forResponse().map(customer, GetCustomerByIdResponse.class);
     }
 
     @Override
     public List<GetAllCustomersResponse> getAll() {
-        return null;
+        List<Customer> customers = customerRepository.findAllByActiveTrue();
+        return customers.stream().map(
+                customer -> modelMapperService.forResponse().map(customer, GetAllCustomersResponse.class)
+        ).toList();
     }
 }

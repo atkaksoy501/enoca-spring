@@ -45,6 +45,7 @@ public class ProductManager implements ProductService {
     public void delete(int id) {
         Product product = productBusinessRules.productMustExists(id);
         product.setActive(false);
+        product.setDeleteDate(LocalDateTime.now());
         productRepository.save(product);
     }
 
