@@ -2,6 +2,8 @@ package com.enoca.challenge.atakanaksoy;
 
 import com.enoca.challenge.atakanaksoy.business.abstracts.CustomerService;
 import com.enoca.challenge.atakanaksoy.business.dtos.requests.customer.CreateCustomerRequest;
+import com.enoca.challenge.atakanaksoy.business.dtos.requests.product.CreateProductRequest;
+import com.enoca.challenge.atakanaksoy.entities.concretes.Product;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -28,9 +30,6 @@ public class TestDataCreator {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private CustomerService customerService;
-
     @Test
     @Order(1)
     void createCustomer() throws Exception {
@@ -50,4 +49,24 @@ public class TestDataCreator {
 
         result.andExpect(status().isCreated());
     }
+
+    @Test
+    @Order(2)
+    void createProduct() throws Exception{
+        CreateProductRequest createProductRequest = new CreateProductRequest();
+        createProductRequest.setName("Product 1");
+        createProductRequest.setPrice(99.9);
+        createProductRequest.setStock(100);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String productJson = objectMapper.writeValueAsString(createProductRequest);
+
+        ResultActions result = mockMvc.perform(post(BASE_URL + "/products/add")
+                .contentType("application/json")
+                .content(productJson));
+
+        result.andExpect(status().isCreated());
+    }
+
 }

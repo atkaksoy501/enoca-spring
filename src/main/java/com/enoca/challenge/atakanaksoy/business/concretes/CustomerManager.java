@@ -24,6 +24,7 @@ public class CustomerManager implements CustomerService {
     @Override
     public CreatedCustomerResponse add(CreateCustomerRequest createCustomerRequest) {
         Customer customer = modelMapperService.forRequest().map(createCustomerRequest, Customer.class);
+        customer.setActive(true);
         customer.setCreateDate(LocalDateTime.now());
         Customer savedCustomer = customerRepository.save(customer);
         return modelMapperService.forResponse().map(savedCustomer, CreatedCustomerResponse.class);

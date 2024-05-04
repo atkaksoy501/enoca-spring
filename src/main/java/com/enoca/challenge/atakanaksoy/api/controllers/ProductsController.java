@@ -7,6 +7,7 @@ import com.enoca.challenge.atakanaksoy.business.dtos.responses.product.CreatedPr
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.product.GetAllProductsResponse;
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.product.GetProductByIdResponse;
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.product.UpdatedProductResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,13 @@ public class ProductsController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedProductResponse add(CreateProductRequest createProductRequest) {
+    public CreatedProductResponse add(@Valid @RequestBody CreateProductRequest createProductRequest) {
         return productService.add(createProductRequest);
     }
 
     @PostMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdatedProductResponse update(UpdateProductRequest updateProductRequest, @PathVariable int id) {
+    public UpdatedProductResponse update(@Valid @RequestBody UpdateProductRequest updateProductRequest, @PathVariable int id) {
         return productService.update(updateProductRequest, id);
     }
 
