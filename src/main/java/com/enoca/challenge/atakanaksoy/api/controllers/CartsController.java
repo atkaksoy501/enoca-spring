@@ -63,4 +63,10 @@ public class CartsController {
     public UpdatedCartResponse removeProduct(@Valid @RequestBody RemoveProductFromCartRequest removeProductFromCartRequest) {
         return cartService.removeProduct(removeProductFromCartRequest);
     }
+
+    @PutMapping("/empty/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void emptyCart(@PathVariable int id) {
+        cartService.emptyCart(id);
+    }
 }

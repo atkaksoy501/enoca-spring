@@ -12,6 +12,5 @@ import java.util.List;
 @Data
 public class UpdateCartRequest {
     private int customerId;
-    private List<CartProduct> products;
     private double totalPrice;
 }

@@ -51,7 +51,7 @@ public class CartManager implements CartService {
     }
 
     @Override
-    public void delete(int id) { //todo: implement emptyCart
+    public void delete(int id) {
         Cart cart = cartBusinessRules.cartMustExists(id);
         cart.setActive(false);
         cart.setDeleteDate(LocalDateTime.now());
@@ -61,7 +61,7 @@ public class CartManager implements CartService {
     @Override
     public GetCartByIdResponse getById(int id) {
         Cart cart = cartBusinessRules.cartMustExists(id);
-        List<Integer> productIds = cart.getCartProducts().stream().map(cp -> cp.getProduct().getId()).toList();
+        List<Integer> productIds = cart.getCartProducts().stream().filter(CartProduct::isActive).map(cp -> cp.getProduct().getId()).toList();
         GetCartByIdResponse getCartByIdResponse = modelMapperService.forResponse().map(cart, GetCartByIdResponse.class);
         getCartByIdResponse.setProductIds(productIds);
         return getCartByIdResponse;
@@ -70,8 +70,11 @@ public class CartManager implements CartService {
     @Override
     public List<GetAllCartsResponse> getAll() {
         List<Cart> carts = cartRepository.findAllByActiveTrue();
-        return carts.stream().map(
-                cart -> modelMapperService.forResponse().map(cart, GetAllCartsResponse.class)
+        return carts.stream().map(cart -> {
+            GetAllCartsResponse getAllCartsResponse = modelMapperService.forResponse().map(cart, GetAllCartsResponse.class);
+            getAllCartsResponse.setProductIds(cart.getCartProducts().stream().filter(CartProduct::isActive).map(cp -> cp.getProduct().getId()).toList());
+            return getAllCartsResponse;
+        }
         ).toList();
     }
 
@@ -120,5 +123,17 @@ public class CartManager implements CartService {
     public GetCartByIdResponse getByCustomerId(int customerId) {
         Cart cart = cartBusinessRules.cartMustExistsByCustomerId(customerId);
         return modelMapperService.forResponse().map(cart, GetCartByIdResponse.class);
+    }
+
+    @Override
+    public void emptyCart(int id) {
+        Cart cart = cartBusinessRules.cartMustExists(id);
+        cart.getCartProducts().forEach(cp -> {
+            cp.setActive(false);
+            cp.setDeleteDate(LocalDateTime.now());
+        });
+        cart.setTotalPrice(0);
+        cart.setUpdateDate(LocalDateTime.now());
+        cartRepository.save(cart);
     }
 }
