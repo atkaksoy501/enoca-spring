@@ -36,4 +36,10 @@ public class CartBusinessRules {
         }
         else return cartProduct;
     }
+
+    public void cartMustHaveAProduct(Cart cart) {
+        if (cart.getCartProducts().isEmpty()) {
+            throw new BusinessException(CartMessages.CART_MUST_HAVE_A_PRODUCT);
+        }
+    }
 }

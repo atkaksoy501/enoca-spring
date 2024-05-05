@@ -47,7 +47,9 @@ public class CartManager implements CartService {
         modelMapperService.forUpdate().map(updateCartRequest, cart);
         cart.setUpdateDate(LocalDateTime.now());
         Cart savedCart = cartRepository.save(cart);
-        return modelMapperService.forResponse().map(savedCart, UpdatedCartResponse.class);
+        UpdatedCartResponse updatedCartResponse = modelMapperService.forResponse().map(savedCart, UpdatedCartResponse.class);
+        updatedCartResponse.setProductIds(savedCart.getCartProducts().stream().filter(CartProduct::isActive).map(cp -> cp.getProduct().getId()).toList());
+        return updatedCartResponse;
     }
 
     @Override
@@ -82,11 +84,11 @@ public class CartManager implements CartService {
     public UpdatedCartResponse addProduct(AddProductToCartRequest addProductToCartRequest) {
         productBusinessRules.productStockMustBeEnough(addProductToCartRequest.getProductId(), addProductToCartRequest.getQuantity());
         Cart cart = cartBusinessRules.cartMustExists(addProductToCartRequest.getCartId());
-        CartProduct cartProduct = cart.getCartProducts().stream().filter(cp -> cp.getProduct().getId() == addProductToCartRequest.getProductId()).findFirst().orElse(new CartProduct());
+        CartProduct cartProduct = cart.getCartProducts().stream().filter(cp -> cp.getProduct().getId() == addProductToCartRequest.getProductId() && cp.isActive()).findFirst().orElse(new CartProduct());
         cartProduct.setCart(cart);
         cartProduct.setProduct(productBusinessRules.productMustExists(addProductToCartRequest.getProductId()));
         cartProduct.setQuantity(cartProduct.getQuantity() + addProductToCartRequest.getQuantity());
-        double totalPrice = cartProduct.getTotalPrice() + (cartProduct.getProduct().getPrice() * addProductToCartRequest.getQuantity());
+        double totalPrice = cartProduct.getProduct().getPrice() * addProductToCartRequest.getQuantity();
         cartProduct.setTotalPrice(totalPrice);
         cartProduct.setActive(true);
         cartProduct.setCreateDate(LocalDateTime.now());
@@ -94,7 +96,10 @@ public class CartManager implements CartService {
         cart.setUpdateDate(LocalDateTime.now());
         cart.setTotalPrice(cart.getTotalPrice() + totalPrice);
         Cart savedCart = cartRepository.save(cart);
-        return modelMapperService.forResponse().map(savedCart, UpdatedCartResponse.class);
+        UpdatedCartResponse updatedCartResponse = modelMapperService.forResponse().map(savedCart, UpdatedCartResponse.class);
+        List<Integer> productIds = savedCart.getCartProducts().stream().filter(CartProduct::isActive).map(cp -> cp.getProduct().getId()).toList();
+        updatedCartResponse.setProductIds(productIds);
+        return updatedCartResponse;
     }
 
     @Override
@@ -102,21 +107,23 @@ public class CartManager implements CartService {
         Cart cart = cartBusinessRules.cartMustExists(removeProductFromCartRequest.getCartId());
         CartProduct cartProduct = cartBusinessRules.cartProductMustExists(cart, removeProductFromCartRequest.getProductId());
         cart.getCartProducts().remove(cartProduct);
+        cart.setTotalPrice(cart.getTotalPrice() - cartProduct.getTotalPrice());
         if (cartProduct.getQuantity() > removeProductFromCartRequest.getQuantity()) {
             cartProduct.setQuantity(cartProduct.getQuantity() - removeProductFromCartRequest.getQuantity());
             cartProduct.setTotalPrice(cartProduct.getTotalPrice() - (cartProduct.getProduct().getPrice() * removeProductFromCartRequest.getQuantity()));
             cartProduct.setUpdateDate(LocalDateTime.now());
-            cart.setTotalPrice(cart.getTotalPrice() - cartProduct.getTotalPrice());
             cart.getCartProducts().add(cartProduct);
+            cart.setTotalPrice(cart.getTotalPrice() + cartProduct.getTotalPrice());
         }
         else {
-            cart.setTotalPrice(cart.getTotalPrice() - cartProduct.getTotalPrice());
             cartProduct.setActive(false);
             cartProduct.setDeleteDate(LocalDateTime.now());
         }
         cart.setUpdateDate(LocalDateTime.now());
         Cart savedCart = cartRepository.save(cart);
-        return modelMapperService.forResponse().map(savedCart, UpdatedCartResponse.class);
+        UpdatedCartResponse updatedCartResponse = modelMapperService.forResponse().map(savedCart, UpdatedCartResponse.class);
+        updatedCartResponse.setProductIds(savedCart.getCartProducts().stream().filter(CartProduct::isActive).map(cp -> cp.getProduct().getId()).toList());
+        return updatedCartResponse;
     }
 
     @Override
@@ -131,6 +138,19 @@ public class CartManager implements CartService {
         cart.getCartProducts().forEach(cp -> {
             cp.setActive(false);
             cp.setDeleteDate(LocalDateTime.now());
+        });
+        cart.setTotalPrice(0);
+        cart.setUpdateDate(LocalDateTime.now());
+        cartRepository.save(cart);
+    }
+
+    @Override
+    public void emptyCartAndReduceStock(Cart cart) {
+        cart.getCartProducts().stream().filter(CartProduct::isActive).forEach(cp -> {
+            cp.setActive(false);
+            cp.setDeleteDate(LocalDateTime.now());
+            cp.getProduct().setStock(cp.getProduct().getStock() - cp.getQuantity());
+            cp.getProduct().setUpdateDate(LocalDateTime.now());
         });
         cart.setTotalPrice(0);
         cart.setUpdateDate(LocalDateTime.now());

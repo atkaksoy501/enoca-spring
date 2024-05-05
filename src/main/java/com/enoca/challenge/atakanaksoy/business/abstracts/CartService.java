@@ -8,6 +8,7 @@ import com.enoca.challenge.atakanaksoy.business.dtos.responses.cart.CreatedCartR
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.cart.GetAllCartsResponse;
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.cart.GetCartByIdResponse;
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.cart.UpdatedCartResponse;
+import com.enoca.challenge.atakanaksoy.entities.concretes.Cart;
 
 import java.util.List;
 
@@ -21,4 +22,5 @@ public interface CartService {
     UpdatedCartResponse removeProduct(RemoveProductFromCartRequest removeProductFromCartRequest);
     GetCartByIdResponse getByCustomerId(int customerId);
     void emptyCart(int id);
+    void emptyCartAndReduceStock(Cart cart);
 }

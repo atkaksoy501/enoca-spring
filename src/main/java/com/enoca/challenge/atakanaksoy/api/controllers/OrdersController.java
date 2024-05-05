@@ -49,4 +49,10 @@ public class OrdersController {
     public List<GetAllOrdersResponse> getAll() {
         return orderService.getAll();
     }
+
+    @GetMapping("/get/all/{customerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<GetAllOrdersResponse> getAllByCustomerId(@PathVariable int customerId) {
+        return orderService.getAllByCustomerId(customerId);
+    }
 }

@@ -12,10 +12,5 @@ import java.util.List;
 @Data
 public class CreateOrderRequest {
     @NotNull
-    private int customerId;
-
-    @NotNull
-    private List<Integer> productIds;
-
-    private double totalPrice;
+    private int cartId;
 }

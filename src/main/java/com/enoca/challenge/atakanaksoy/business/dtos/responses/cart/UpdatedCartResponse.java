@@ -15,6 +15,6 @@ public class UpdatedCartResponse {
     private int id;
     private int customerId;
     private double totalPrice;
-    private List<CartProduct> products;
+    private List<Integer> productIds;
     private LocalDateTime updateDate;
 }
