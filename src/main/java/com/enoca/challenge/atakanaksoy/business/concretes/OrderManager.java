@@ -9,7 +9,6 @@ import com.enoca.challenge.atakanaksoy.business.dtos.responses.order.GetAllOrder
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.order.GetOrderByIdResponse;
 import com.enoca.challenge.atakanaksoy.business.dtos.responses.order.UpdatedOrderResponse;
 import com.enoca.challenge.atakanaksoy.business.rules.CartBusinessRules;
-import com.enoca.challenge.atakanaksoy.business.rules.CustomerBusinessRules;
 import com.enoca.challenge.atakanaksoy.business.rules.OrderBusinessRules;
 import com.enoca.challenge.atakanaksoy.core.utilities.mapping.ModelMapperService;
 import com.enoca.challenge.atakanaksoy.dataAccess.abstracts.OrderRepository;

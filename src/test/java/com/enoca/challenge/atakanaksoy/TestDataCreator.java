@@ -1,15 +1,11 @@
 package com.enoca.challenge.atakanaksoy;
 
-import com.enoca.challenge.atakanaksoy.business.abstracts.CustomerService;
 import com.enoca.challenge.atakanaksoy.business.dtos.requests.cart.AddProductToCartRequest;
 import com.enoca.challenge.atakanaksoy.business.dtos.requests.cart.CreateCartRequest;
 import com.enoca.challenge.atakanaksoy.business.dtos.requests.customer.CreateCustomerRequest;
 import com.enoca.challenge.atakanaksoy.business.dtos.requests.product.CreateProductRequest;
-import com.enoca.challenge.atakanaksoy.entities.concretes.Product;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

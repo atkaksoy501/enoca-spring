@@ -1,6 +1,5 @@
 package com.enoca.challenge.atakanaksoy.business.dtos.responses.cart;
 
-import com.enoca.challenge.atakanaksoy.entities.concretes.CartProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
