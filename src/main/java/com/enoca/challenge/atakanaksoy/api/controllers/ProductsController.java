@@ -33,7 +33,7 @@ public class ProductsController {
     }
 
     @Operation(summary = "Update an existing Product with id")
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UpdatedProductResponse update(@Valid @RequestBody UpdateProductRequest updateProductRequest, @PathVariable int id) {
         return productService.update(updateProductRequest, id);
