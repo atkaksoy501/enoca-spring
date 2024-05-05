@@ -129,7 +129,9 @@ public class CartManager implements CartService {
     @Override
     public GetCartByIdResponse getByCustomerId(int customerId) {
         Cart cart = cartBusinessRules.cartMustExistsByCustomerId(customerId);
-        return modelMapperService.forResponse().map(cart, GetCartByIdResponse.class);
+        GetCartByIdResponse getCartByIdResponse = modelMapperService.forResponse().map(cart, GetCartByIdResponse.class);
+        getCartByIdResponse.setProductIds(cart.getCartProducts().stream().filter(CartProduct::isActive).map(cp -> cp.getProduct().getId()).toList());
+        return getCartByIdResponse;
     }
 
     @Override

@@ -46,6 +46,12 @@ public class CartsController {
         return cartService.getById(id);
     }
 
+    @GetMapping("/get/customer/{customerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public GetCartByIdResponse getByCustomerId(@PathVariable int customerId) {
+        return cartService.getByCustomerId(customerId);
+    }
+
     @GetMapping("/get/all")
     @ResponseStatus(HttpStatus.OK)
     public List<GetAllCartsResponse> getAll() {
